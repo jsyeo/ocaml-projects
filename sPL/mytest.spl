@@ -1,0 +1,1 @@
+let {int} y = 5 in {int} y * 2 end

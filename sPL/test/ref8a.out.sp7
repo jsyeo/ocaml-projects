@@ -1,0 +1,18 @@
+Loading sPL program ..
+  fun {int -> int} x -> 3 * 4 end
+  as fun {Int->Int} x -> *[Int(3),Int(4)] end
+TYPE CHECKING program ..
+ ==> inferred type Int->Int
+TRANSFORMING ==> fun {Int->Int} x -> *[Int(3),Int(4)] end
+COMPILING ==> sp7.svm
+[LDF([],1,label_0),DONE,
+label_0:,LDCI 3,LDCI 4,TIMES,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],1,label_0),DONE,
+label_0:,LDCI 3,LDCI 4,TIMES,RTN]
+LINKING ==> 
+[LDF([],1,2),DONE,
+2:,LDCI 3,LDCI 4,TIMES,RTN]
+Loading sVM code from ..sp7.svm
+Loaded [LDF([],1,2),DONE,LDCI 3,LDCI 4,TIMES,RTN]
+Executing ==> CLOSURE

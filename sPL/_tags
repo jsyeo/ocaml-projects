@@ -1,0 +1,4 @@
+<sVM.*>: package(deriving-ocsigen.syntax), syntax(camlp4o)
+<sPL_compile.*>: package(deriving-ocsigen.syntax), syntax(camlp4o)
+<sVM_exec.*> :  package(deriving-ocsigen.syntax), syntax(camlp4o)
+<sPL_parser.ml>: pp(camlp4of.opt)

@@ -1,0 +1,34 @@
+Loading sPL program ..
+  let {int->int->int}   facloop =      recfun facloop {int->int->int} n acc ->                 if n=1 then acc                else facloop (n-1) (acc*n)                end             endin {int}   let {int->int}      fac = fun {int->int} n -> facloop n 1 end   in {int}      fac 4   endend
+  as let {Int->Int->Int} facloop = recfun facloop {Int->Int->Int} n acc -> if =[Var(n),Int(1)] then Var(acc) else Appln[Var(facloop); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end in {Int}let {Int->Int} fac = fun {Int->Int} n -> Appln[Var(facloop); Var(n);Int(1)] end in {Int}Appln[Var(fac); Int(4)] end end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} facloop -> Appln[fun {(Int->Int)->Int} fac -> Appln[Var(fac); Int(4)] end; fun {Int->Int} n -> Appln[Var(facloop); Var(n);Int(1)] end] end; recfun facloop {Int->Int->Int} n acc -> if =[Var(n),Int(1)] then Var(acc) else Appln[Var(facloop); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end]
+COMPILING ==> sp13a.svm
+[LDFR([(facloop,1)],2,label_3),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDF([(facloop,0)],1,label_2),LDF([],1,label_1),CALL 1,RTN,
+label_1:,LDCI 4,LD (fac,0),CALL 1,RTN,
+label_2:,LDCI 1,LD (n,1),LD (facloop,0),CALL 2,RTN,
+label_3:,LD (n,1),LDCI 1,EQ,JOF label_4,LD (acc,2),GOTO label_5,
+label_4:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),CALL 2,
+label_5:,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(facloop,1)],2,label_3),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDF([(facloop,0)],1,label_2),LDF([],1,label_1),TAILCALL 1,
+label_1:,LDCI 4,LD (fac,0),TAILCALL 1,
+label_2:,LDCI 1,LD (n,1),LD (facloop,0),TAILCALL 2,
+label_3:,LD (n,1),LDCI 1,EQ,JOF label_4,LD (acc,2),GOTO label_5,
+label_4:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),TAILCALL 2,
+label_5:,RTN]
+LINKING ==> 
+[LDFR([(facloop,1)],2,14),LDF([],1,4),CALL 1,DONE,
+4:,LDF([(facloop,0)],1,10),LDF([],1,7),TAILCALL 1,
+7:,LDCI 4,LD (fac,0),TAILCALL 1,
+10:,LDCI 1,LD (n,1),LD (facloop,0),TAILCALL 2,
+14:,LD (n,1),LDCI 1,EQ,JOF 20,LD (acc,2),GOTO 28,
+20:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),TAILCALL 2,
+28:,RTN]
+Loading sVM code from ..sp13a.svm
+Loaded [LDFR([(facloop,1)],2,14),LDF([],1,4),CALL 1,DONE,LDF([(facloop,0)],1,10),LDF([],1,7),TAILCALL 1,LDCI 4,LD (fac,0),TAILCALL 1,LDCI 1,LD (n,1),LD (facloop,0),TAILCALL 2,LD (n,1),LDCI 1,EQ,JOF 20,LD (acc,2),GOTO 28,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),TAILCALL 2,RTN]
+High Stack Memory Mark :3
+Executing ==> 24

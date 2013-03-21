@@ -1,0 +1,340 @@
+// (* s1.spl - over-appln *)
+fun {int -> int -> int} x -> 
+   fun {int -> int} y -> x * y end
+end 3 4
+
+// (* s2.spl - over-appln *)
+fun {int -> int -> int -> int} x y -> 
+   fun {int -> int} z -> y + z - x end
+end 7 8 9
+
+// (* s2a.spl - exact-appln *)
+fun {int -> int -> int} x y -> 
+   x - y
+end 7 8
+
+// (* s2b.spl - under-appln *)
+fun {int -> int -> int} x y -> 
+   x + y
+end 7
+
+// (* s2c.spl - under-appln *)
+let {int->int->int} f = fun {int->int->int} x y -> x + y end
+in {int}
+let {(int->int)->int->int} apply = fun {(int->int)->int->int} g x -> g x end
+   in {int}
+   apply (f 3) 4 end
+end
+
+// (* s3.spl - operator *)
+(2 * 2) + 4
+
+// (* s4.spl - conditional *)
+if (2=3) then 1 else 4 end
+
+// (* s5.spl -  appln *)
+fun {int->int} x -> x+3 end 5
+
+// (* sp5.spl - recursion  *)
+let {int -> int -> int} 
+    power = recfun mypower {int -> int -> int} 
+               x y -> 
+               if y = 0 
+               then 1 
+               else x * (mypower x (y - 1)) 
+               end
+            end
+            in  {int}
+    (power 17 3)
+end
+
+// (* s6.spl - higher-order recursive *)
+let {int -> int -> (int -> int -> int) -> int -> int}
+    recurse 
+    = recfun recurse 
+          {int -> int -> (int -> int -> int) -> int -> int}
+          x y operation initvalue
+       -> if y = 0 then initvalue 
+          else (operation x 
+                (recurse x (y - 1) operation initvalue))
+          end
+      end
+in {int}
+(recurse 2 3 (fun {int->int->int} x z -> x * z end) 
+         1)
+end
+
+// (* s6a.spl - higher-order recursive *)
+let {int -> int -> (int -> int -> int) -> int -> int}
+    recurse 
+    = recfun recurse 
+          {int -> int -> (int -> int -> int) -> int -> int}
+          x y operation initvalue
+       -> if y = 0 then initvalue 
+          else (operation x 
+                (recurse x (y - 1) operation initvalue))
+          end
+      end
+in {int}
+(recurse 2 3 (fun {int -> int -> int} 
+                x z -> x + z end) 
+         0)
+end
+
+// (* s6b.spl - higher-order recursive *)
+let {int -> int -> (int -> int -> int) -> int -> int}
+    recurse 
+    = recfun recurse 
+          {int -> int -> (int -> int -> int) -> int -> int}
+          x y operation initvalue
+       -> if y = 0 then initvalue 
+          else (operation x 
+                (recurse x (y - 1) operation initvalue))
+          end
+      end
+in {int}
+(recurse 2 3 (fun {int -> int -> int} 
+                x z -> z / x end)
+         128)
+end
+
+// (* s6z.spl - higher-order recursive *)
+let {int -> int -> (int -> int -> int) -> int -> int}
+    recurse 
+    = recfun recurse 
+          {int -> int -> (int -> int -> int) -> int -> int}
+          x y operation initvalue
+       -> if y = 0 then initvalue 
+          else (operation x 
+                (recurse x (y - 1) operation initvalue))
+          end
+      end
+in {int}
+(recurse 2 3 fun {int->int->int} x z -> x * z end 
+         1)
+end
+
+// (* sp7.spl -  function result *)
+fun {int -> int} x -> 3 * 4 end
+
+// (* sp7a.spl -  application *)
+(fun {int -> int} x -> x * x end 4)
+
+// (* sp8.spl -  let construct *)
+let {int->int}
+    square = fun {int->int} x -> x * x end
+in {int}
+    (fun {int -> int} x -> 4 * (square x) end 3)
+end
+
+// (* sp9.spl -  let construct *)
+ let {int} s = 5
+ in  {int}
+     let {int -> int} f = fun {int -> int} x -> x + s end
+     in  {int}
+         let {int} s = 10 
+         in  {int}
+             (f 3)
+         end
+     end
+end
+
+// (* sp10.spl - rec method *)
+recfun fac {int -> int} n -> 
+   if n < 2 then 1 
+   else n * (fac (n-1)) 
+   end
+end
+
+// (* sp10a.spl - rec method *)
+recfun fac {int -> int} n -> 
+   if n < 2 then 1 
+   else n * (fac (n-1)) 
+   end
+end 5
+
+// (* sp10b.spl - rec method *)
+recfun fac {int -> int} n -> 
+   if n < 2 then 1 
+   else n * (fac (n-1)) 
+   end
+end 20
+
+// (* sp10c.spl - rec method - integer overflow ==> -738197504 *)
+recfun fac {int -> int} n -> 
+   if n < 2 then 1 
+   else n * (fac (n-1)) 
+   end
+end 30
+
+
+// (* sp11.spl -  Infinite Loop *)
+recfun f {int -> int} n -> (f n) end
+
+// (* sp11-a.spl - Infinite Loop *)
+recfun f {int -> int} n -> (f n) end 3
+
+// (* sp11-b.spl - Infinite Loop --> stack overflow *)
+recfun f {int -> int} n -> n+(f n) end 3
+
+// (* sp12.spl -  *)
+fun {(int->int)->int->int} x y -> x y end 
+fun {int->int} x -> x+1 end 
+3
+
+// (* sp13.spl -  *)
+let 
+ {int->int->int}
+ facloop 
+ = fun {int->int->int} n acc -> 1 end
+ in 
+ {int} 
+ 3
+ end
+
+
+// (* sp13a.spl - tail-recursive factorial *)
+let {int->int->int}
+   facloop = 
+     recfun facloop {int->int->int} n acc -> 
+                if n=1 then acc
+                else facloop (n-1) (acc*n)
+                end
+             end
+in {int}
+   let {int->int}
+      fac = fun {int->int} n -> facloop n 1 end
+   in {int}
+      fac 4
+   end
+end
+
+// (* sp13b.spl -  *)
+let {int->int} fac 
+ = fun {int->int} n -> n+1 end
+ in 
+ {int} 
+ fac 3
+ end
+
+
+// (* sp13c.spl -  *)
+let {int} fac = if true then 1 else 2 end
+ in 
+ {int} 
+ fac + 3
+ end
+
+
+// (* sp14.spl - recursion *)
+let {int->int}
+   f = 
+     recfun foo {int->int} n -> 
+                if n=0 then 0
+                else 2 + (foo (n-1))
+                end
+             end
+in {int}
+   f 4
+end
+
+// (* sp14a.spl - recursion *)
+let {int->int}
+   f = 
+     recfun foo {int->int} n -> 
+                if n=0 then 0
+                else n + (foo (n-1))
+                end
+             end
+in {int}
+   f 4
+end
+
+// (* sp14b.spl - recursion *)
+let {int->int}
+   f = 
+     recfun foo {int->int} n -> 
+                if n=0 then 0
+                else (foo (n-1))+n
+                end
+             end
+in {int}
+   f 4
+end
+
+
+// (* sp15.spl -  *)
+let {int->int->int}
+   f = 
+     recfun foo {int->int->int} n -> 
+                if n=0 then fun {int->int} acc -> acc end
+                else fun {int->int} acc -> (foo (n-1) (acc*n)) end
+                end
+             end
+in {int}
+   f 30 1
+end
+
+// (* sp17.spl -  let *)
+let {int->int} f =
+  (fun {int->int->int} x 
+      -> (fun {int->int} y -> x+y end) end) 3
+in {int} f 4
+end
+
+
+// (* sp17a.spl -  no let *)
+(fun {(int->int)->int} f -> f 4 end) 
+((fun {int->int->int} x -> (fun {int->int} y -> x+y end) end) 3)
+
+
+// (* sp17b.spl -  let *)
+let {int->int} f =
+  (fun {int->int->int} x 
+      -> (fun {int->int} y -> x+y end) end) 3
+in {int} f 4 end
+
+// (* sp17c.spl -  let *)
+let {int->int->int} f =
+  (fun {int->int->int} x 
+      -> fun {int->int} y -> x+y end end)
+in {int->int} f 4 
+end
+
+// (* sp17d.spl -  let *)
+let {int->int->int} f =
+  (fun {int->int->int} x 
+      -> (fun {int->int} y -> x+y end) end)
+in {int->int} (fun {int->int} pa -> f 4 pa end) end
+
+
+// (* sp18.spl -  escape scope? *)
+let {int->int->int} f = 
+      fun {int->int->int} x -> fun {int->int} y -> x+y end end
+in {int}
+   let {int->int} g =
+      let {int} y = 3 in {int->int}
+       f 3
+      end
+   in {int}
+     g 4
+   end
+end
+
+[LDF([],1,21),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,LDF([(f,0)],1,14),CALL 1,LDF([],1,10),CALL 1,RTN,
+10:,LDCI 4,LD (g,0),CALL 1,RTN,
+14:,LDF([(f,0)],1,16),RTN,
+16:,LD (_pa_var_0,1),LDCI 3,LD (f,0),CALL 2,RTN,
+21:,LDF([(x,0)],1,23),RTN,
+23:,LD (x,0),LD (y,1),PLUS,RTN]
+
+--dis-pa
+[LDF([],1,18),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,LDF([(f,0)],1,14),CALL 1,LDF([],1,10),CALL 1,RTN,
+10:,LDCI 4,LD (g,0),CALL 1,RTN,
+14:,LDCI 3,LD (f,0),CALL 1,RTN,
+18:,LDF([(x,0)],1,20),RTN,
+20:,LD (x,0),LD (y,1),PLUS,RTN]
+
+

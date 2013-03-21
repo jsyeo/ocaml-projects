@@ -1,0 +1,21 @@
+Loading sPL program ..
+   let {int} s = 5 in  {int}     let {int -> int} f = fun {int -> int} x -> x + s end     in  {int}         let {int} s = 10          in  {int}             (f 3)         end     endend
+  as let {Int} s = Int(5) in {Int}let {Int->Int} f = fun {Int->Int} x -> +[Var(x),Var(s)] end in {Int}let {Int} s = Int(10) in {Int}Appln[Var(f); Int(3)] end end end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {Int->Int} s -> Appln[fun {(Int->Int)->Int} f -> Appln[fun {Int->Int} s -> Appln[Var(f); Int(3)] end; Int(10)] end; fun {Int->Int} x -> +[Var(x),Var(s)] end] end; Int(5)]
+COMPILING ==> sp9.svm
+[LDCI 5,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDF([(s,0)],1,label_3),LDF([],1,label_1),CALL 1,RTN,
+label_1:,LDCI 10,LDF([(f,0)],1,label_2),CALL 1,RTN,
+label_2:,LDCI 3,LD (f,0),CALL 1,RTN,
+label_3:,LD (x,1),LD (s,0),PLUS,RTN]
+LINKING ==> 
+[LDCI 5,LDF([],1,4),CALL 1,DONE,
+4:,LDF([(s,0)],1,16),LDF([],1,8),CALL 1,RTN,
+8:,LDCI 10,LDF([(f,0)],1,12),CALL 1,RTN,
+12:,LDCI 3,LD (f,0),CALL 1,RTN,
+16:,LD (x,1),LD (s,0),PLUS,RTN]
+Loading sVM code from ..sp9.svm
+Loaded [LDCI 5,LDF([],1,4),CALL 1,DONE,LDF([(s,0)],1,16),LDF([],1,8),CALL 1,RTN,LDCI 10,LDF([(f,0)],1,12),CALL 1,RTN,LDCI 3,LD (f,0),CALL 1,RTN,LD (x,1),LD (s,0),PLUS,RTN]
+Executing ==> 8

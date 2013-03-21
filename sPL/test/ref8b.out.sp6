@@ -1,0 +1,31 @@
+Loading sPL program ..
+  let {int -> int -> (int -> int -> int) -> int -> int}    recurse     = recfun recurse           {int -> int -> (int -> int -> int) -> int -> int}          x y operation initvalue       -> if y = 0 then initvalue           else (operation x                 (recurse x (y - 1) operation initvalue))          end      endin {int}(recurse 2 3 (fun {int->int->int} x z -> x * z end)          1)end
+  as let {Int->Int->(Int->Int->Int)->Int->Int} recurse = recfun recurse {Int->Int->(Int->Int->Int)->Int->Int} x y operation initvalue -> if =[Var(y),Int(0)] then Var(initvalue) else Appln[Var(operation); Var(x);Appln[Var(recurse); Var(x);-[Var(y),Int(1)];Var(operation);Var(initvalue)]] end in {Int}Appln[Var(recurse); Int(2);Int(3);fun {Int->Int->Int} x z -> *[Var(x),Var(z)] end;Int(1)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->(Int->Int->Int)->Int->Int)->Int} recurse -> Appln[Var(recurse); Int(2);Int(3);fun {Int->Int->Int} x z -> *[Var(x),Var(z)] end;Int(1)] end; recfun recurse {Int->Int->(Int->Int->Int)->Int->Int} x y operation initvalue -> if =[Var(y),Int(0)] then Var(initvalue) else Appln[Var(operation); Var(x);Appln[Var(recurse); Var(x);-[Var(y),Int(1)];Var(operation);Var(initvalue)]] end]
+COMPILING ==> sp6.svm
+[LDFR([(recurse,1)],4,label_2),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 1,LDF([],2,label_1),LDCI 3,LDCI 2,LD (recurse,0),CALL 4,RTN,
+label_1:,LD (x,0),LD (z,1),TIMES,RTN,
+label_2:,LD (y,2),LDCI 0,EQ,JOF label_3,LD (initvalue,4),GOTO label_4,
+label_3:,LD (initvalue,4),LD (operation,3),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (recurse,0),CALL 4,LD (x,1),LD (operation,3),CALL 2,
+label_4:,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(recurse,1)],4,label_2),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 1,LDF([],2,label_1),LDCI 3,LDCI 2,LD (recurse,0),TAILCALL 4,
+label_1:,LD (x,0),LD (z,1),TIMES,RTN,
+label_2:,LD (y,2),LDCI 0,EQ,JOF label_3,LD (initvalue,4),GOTO label_4,
+label_3:,LD (initvalue,4),LD (operation,3),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (recurse,0),CALL 4,LD (x,1),LD (operation,3),TAILCALL 2,
+label_4:,RTN]
+LINKING ==> 
+[LDFR([(recurse,1)],4,14),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 1,LDF([],2,10),LDCI 3,LDCI 2,LD (recurse,0),TAILCALL 4,
+10:,LD (x,0),LD (z,1),TIMES,RTN,
+14:,LD (y,2),LDCI 0,EQ,JOF 20,LD (initvalue,4),GOTO 31,
+20:,LD (initvalue,4),LD (operation,3),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (recurse,0),CALL 4,LD (x,1),LD (operation,3),TAILCALL 2,
+31:,RTN]
+Loading sVM code from ..sp6.svm
+Loaded [LDFR([(recurse,1)],4,14),LDF([],1,4),CALL 1,DONE,LDCI 1,LDF([],2,10),LDCI 3,LDCI 2,LD (recurse,0),TAILCALL 4,LD (x,0),LD (z,1),TIMES,RTN,LD (y,2),LDCI 0,EQ,JOF 20,LD (initvalue,4),GOTO 31,LD (initvalue,4),LD (operation,3),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (recurse,0),CALL 4,LD (x,1),LD (operation,3),TAILCALL 2,RTN]
+High Stack Memory Mark :20
+Executing ==> 8

@@ -1,0 +1,22 @@
+Loading sPL program ..
+  let {int->int->int}   facloop =      recfun facloop {int->int->int} n acc ->                 if n=1 then acc                else facloop (n-1) (acc*n)                end             endin {int}   let {int->int}      fac = fun {int->int} n -> facloop n 1 end   in {int}      fac 4   endend
+  as let {Int->Int->Int} facloop = recfun facloop {Int->Int->Int} n acc -> if =[Var(n),Int(1)] then Var(acc) else Appln[Var(facloop); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end in {Int}let {Int->Int} fac = fun {Int->Int} n -> Appln[Var(facloop); Var(n);Int(1)] end in {Int}Appln[Var(fac); Int(4)] end end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} facloop -> Appln[fun {(Int->Int)->Int} fac -> Appln[Var(fac); Int(4)] end; fun {Int->Int} n -> Appln[Var(facloop); Var(n);Int(1)] end] end; recfun facloop {Int->Int->Int} n acc -> if =[Var(n),Int(1)] then Var(acc) else Appln[Var(facloop); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end]
+COMPILING ==> sp13a.svm
+[LDFR([(facloop,0)],2,label_2),LDF([],1,label_5),CALL 1,DONE,
+label_2:,LD (n,1),LDCI 1,EQ,JOF label_3,LD (acc,2),GOTO label_4,
+label_3:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),CALL 2,
+label_4:,RTN,
+label_5:,LDF([(facloop,0)],1,label_6),LDF([],1,label_7),CALL 1,RTN,
+label_6:,LDCI 1,LD (n,1),LD (facloop,0),CALL 2,RTN,
+label_7:,LDCI 4,LD (fac,0),CALL 1,RTN]
+LINKING ==> 
+[LDFR([(facloop,0)],2,4),LDF([],1,19),CALL 1,DONE,
+4:,LD (n,1),LDCI 1,EQ,JOF 10,LD (acc,2),GOTO 18,
+10:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (facloop,0),CALL 2,
+18:,RTN,
+19:,LDF([(facloop,0)],1,23),LDF([],1,28),CALL 1,RTN,
+23:,LDCI 1,LD (n,1),LD (facloop,0),CALL 2,RTN,
+28:,LDCI 4,LD (fac,0),CALL 1,RTN]

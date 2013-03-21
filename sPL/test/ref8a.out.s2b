@@ -1,0 +1,21 @@
+Loading sPL program ..
+  fun {int -> int -> int} x y ->    x + yend 7
+  as Appln[fun {Int->Int->Int} x y -> +[Var(x),Var(y)] end; Int(7)]
+TYPE CHECKING program ..
+ ==> inferred type Int->Int
+TRANSFORMING ==> fun {Int->Int} _pa_var_0 -> Appln[fun {Int->Int->Int} x y -> +[Var(x),Var(y)] end; Int(7);Var(_pa_var_0)] end
+COMPILING ==> s2b.svm
+[LDF([],1,label_0),DONE,
+label_0:,LD (_pa_var_0,0),LDCI 7,LDF([],2,label_1),CALL 2,RTN,
+label_1:,LD (x,0),LD (y,1),PLUS,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],1,label_0),DONE,
+label_0:,LD (_pa_var_0,0),LDCI 7,LDF([],2,label_1),TAILCALL 2,
+label_1:,LD (x,0),LD (y,1),PLUS,RTN]
+LINKING ==> 
+[LDF([],1,2),DONE,
+2:,LD (_pa_var_0,0),LDCI 7,LDF([],2,6),TAILCALL 2,
+6:,LD (x,0),LD (y,1),PLUS,RTN]
+Loading sVM code from ..s2b.svm
+Loaded [LDF([],1,2),DONE,LD (_pa_var_0,0),LDCI 7,LDF([],2,6),TAILCALL 2,LD (x,0),LD (y,1),PLUS,RTN]
+Executing ==> CLOSURE

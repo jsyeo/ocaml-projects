@@ -1,0 +1,21 @@
+Loading sPL program ..
+  let  {int->int->int} facloop  = fun {int->int->int} n acc -> 1 end in  {int}  3 end
+  as let {Int->Int->Int} facloop = fun {Int->Int->Int} n acc -> Int(1) end in {Int}Int(3) end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} facloop -> Int(3) end; fun {Int->Int->Int} n acc -> Int(1) end]
+COMPILING ==> sp13.svm
+[LDF([],2,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,RTN,
+label_1:,LDCI 1,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],2,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,RTN,
+label_1:,LDCI 1,RTN]
+LINKING ==> 
+[LDF([],2,6),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,RTN,
+6:,LDCI 1,RTN]
+Loading sVM code from ..sp13.svm
+Loaded [LDF([],2,6),LDF([],1,4),CALL 1,DONE,LDCI 3,RTN,LDCI 1,RTN]
+Executing ==> 3

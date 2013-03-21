@@ -1,0 +1,19 @@
+Loading sPL program ..
+  recfun f {int -> int} n -> (f n) end
+  as recfun f {Int->Int} n -> Appln[Var(f); Var(n)] end
+TYPE CHECKING program ..
+ ==> inferred type Int->Int
+TRANSFORMING ==> recfun f {Int->Int} n -> Appln[Var(f); Var(n)] end
+COMPILING ==> sp11.svm
+[LDFR([(f,1)],1,label_0),DONE,
+label_0:,LD (n,1),LD (f,0),CALL 1,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(f,1)],1,label_0),DONE,
+label_0:,LD (n,1),LD (f,0),TAILCALL 1]
+LINKING ==> 
+[LDFR([(f,1)],1,2),DONE,
+2:,LD (n,1),LD (f,0),TAILCALL 1]
+Loading sVM code from ..sp11.svm
+Loaded [LDFR([(f,1)],1,2),DONE,LD (n,1),LD (f,0),TAILCALL 1]
+High Stack Memory Mark :0
+Executing ==> CLOSURE

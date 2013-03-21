@@ -1,0 +1,17 @@
+Loading sPL program ..
+  if (2=3) then 1 else 4 end
+  as if =[Int(2),Int(3)] then Int(1) else Int(4)
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> if =[Int(2),Int(3)] then Int(1) else Int(4)
+COMPILING ==> s4.svm
+[LDCI 2,LDCI 3,EQ,JOF label_0,LDCI 1,GOTO label_1,
+label_0:,LDCI 4,
+label_1:,DONE]
+LINKING ==> 
+[LDCI 2,LDCI 3,EQ,JOF 6,LDCI 1,GOTO 7,
+6:,LDCI 4,
+7:,DONE]
+Loading sVM code from ..s4.svm
+Loaded [LDCI 2,LDCI 3,EQ,JOF 6,LDCI 1,GOTO 7,LDCI 4,DONE]
+Executing ==> 4

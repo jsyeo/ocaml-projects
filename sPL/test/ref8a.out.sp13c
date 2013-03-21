@@ -1,0 +1,24 @@
+Loading sPL program ..
+  let {int} fac = if true then 1 else 2 end in  {int}  fac + 3 end
+  as let {Int} fac = if Bool(true) then Int(1) else Int(2) in {Int}+[Var(fac),Int(3)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {Int->Int} fac -> +[Var(fac),Int(3)] end; if Bool(true) then Int(1) else Int(2)]
+COMPILING ==> sp13c.svm
+[LDCB true,JOF label_1,LDCI 1,GOTO label_2,
+label_1:,LDCI 2,
+label_2:,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (fac,0),LDCI 3,PLUS,RTN]
+TAIL-OPTIMIZE ==> 
+[LDCB true,JOF label_1,LDCI 1,GOTO label_2,
+label_1:,LDCI 2,
+label_2:,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (fac,0),LDCI 3,PLUS,RTN]
+LINKING ==> 
+[LDCB true,JOF 4,LDCI 1,GOTO 5,
+4:,LDCI 2,
+5:,LDF([],1,8),CALL 1,DONE,
+8:,LD (fac,0),LDCI 3,PLUS,RTN]
+Loading sVM code from ..sp13c.svm
+Loaded [LDCB true,JOF 4,LDCI 1,GOTO 5,LDCI 2,LDF([],1,8),CALL 1,DONE,LD (fac,0),LDCI 3,PLUS,RTN]
+Executing ==> 4

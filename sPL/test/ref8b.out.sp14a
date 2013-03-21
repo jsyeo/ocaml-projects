@@ -1,0 +1,28 @@
+Loading sPL program ..
+  let {int->int}   f =      recfun foo {int->int} n ->                 if n=0 then 0                else n + (foo (n-1))                end             endin {int}   f 4end
+  as let {Int->Int} f = recfun foo {Int->Int} n -> if =[Var(n),Int(0)] then Int(0) else +[Var(n),Appln[Var(foo); -[Var(n),Int(1)]]] end in {Int}Appln[Var(f); Int(4)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int)->Int} f -> Appln[Var(f); Int(4)] end; recfun foo {Int->Int} n -> if =[Var(n),Int(0)] then Int(0) else +[Var(n),Appln[Var(foo); -[Var(n),Int(1)]]] end]
+COMPILING ==> sp14a.svm
+[LDFR([(foo,1)],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 4,LD (f,0),CALL 1,RTN,
+label_1:,LD (n,1),LDCI 0,EQ,JOF label_2,LDCI 0,GOTO label_3,
+label_2:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (foo,0),CALL 1,PLUS,
+label_3:,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(foo,1)],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 4,LD (f,0),TAILCALL 1,
+label_1:,LD (n,1),LDCI 0,EQ,JOF label_2,LDCI 0,GOTO label_3,
+label_2:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (foo,0),CALL 1,PLUS,
+label_3:,RTN]
+LINKING ==> 
+[LDFR([(foo,1)],1,7),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 4,LD (f,0),TAILCALL 1,
+7:,LD (n,1),LDCI 0,EQ,JOF 13,LDCI 0,GOTO 20,
+13:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (foo,0),CALL 1,PLUS,
+20:,RTN]
+Loading sVM code from ..sp14a.svm
+Loaded [LDFR([(foo,1)],1,7),LDF([],1,4),CALL 1,DONE,LDCI 4,LD (f,0),TAILCALL 1,LD (n,1),LDCI 0,EQ,JOF 13,LDCI 0,GOTO 20,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (foo,0),CALL 1,PLUS,RTN]
+High Stack Memory Mark :10
+Executing ==> 10

@@ -1,0 +1,19 @@
+Loading sPL program ..
+  fun {int->int} x -> x+3 end 5
+  as Appln[fun {Int->Int} x -> +[Var(x),Int(3)] end; Int(5)]
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {Int->Int} x -> +[Var(x),Int(3)] end; Int(5)]
+COMPILING ==> s5.svm
+[LDCI 5,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (x,0),LDCI 3,PLUS,RTN]
+TAIL-OPTIMIZE ==> 
+[LDCI 5,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (x,0),LDCI 3,PLUS,RTN]
+LINKING ==> 
+[LDCI 5,LDF([],1,4),CALL 1,DONE,
+4:,LD (x,0),LDCI 3,PLUS,RTN]
+Loading sVM code from ..s5.svm
+Loaded [LDCI 5,LDF([],1,4),CALL 1,DONE,LD (x,0),LDCI 3,PLUS,RTN]
+High Stack Memory Mark :1
+Executing ==> 8

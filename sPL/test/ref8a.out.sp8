@@ -1,0 +1,24 @@
+Loading sPL program ..
+  let {int->int}    square = fun {int->int} x -> x * x endin {int}    (fun {int -> int} x -> 4 * (square x) end 3)end
+  as let {Int->Int} square = fun {Int->Int} x -> *[Var(x),Var(x)] end in {Int}Appln[fun {Int->Int} x -> *[Int(4),Appln[Var(square); Var(x)]] end; Int(3)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int)->Int} square -> Appln[fun {Int->Int} x -> *[Int(4),Appln[Var(square); Var(x)]] end; Int(3)] end; fun {Int->Int} x -> *[Var(x),Var(x)] end]
+COMPILING ==> sp8.svm
+[LDF([],1,label_2),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LDF([(square,0)],1,label_1),CALL 1,RTN,
+label_1:,LDCI 4,LD (x,1),LD (square,0),CALL 1,TIMES,RTN,
+label_2:,LD (x,0),LD (x,0),TIMES,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],1,label_2),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LDF([(square,0)],1,label_1),TAILCALL 1,
+label_1:,LDCI 4,LD (x,1),LD (square,0),CALL 1,TIMES,RTN,
+label_2:,LD (x,0),LD (x,0),TIMES,RTN]
+LINKING ==> 
+[LDF([],1,13),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,LDF([(square,0)],1,7),TAILCALL 1,
+7:,LDCI 4,LD (x,1),LD (square,0),CALL 1,TIMES,RTN,
+13:,LD (x,0),LD (x,0),TIMES,RTN]
+Loading sVM code from ..sp8.svm
+Loaded [LDF([],1,13),LDF([],1,4),CALL 1,DONE,LDCI 3,LDF([(square,0)],1,7),TAILCALL 1,LDCI 4,LD (x,1),LD (square,0),CALL 1,TIMES,RTN,LD (x,0),LD (x,0),TIMES,RTN]
+Executing ==> 36

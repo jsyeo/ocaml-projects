@@ -1,0 +1,21 @@
+Loading sPL program ..
+  let {int->int} fac  = fun {int->int} n -> n+1 end in  {int}  fac 3 end
+  as let {Int->Int} fac = fun {Int->Int} n -> +[Var(n),Int(1)] end in {Int}Appln[Var(fac); Int(3)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int)->Int} fac -> Appln[Var(fac); Int(3)] end; fun {Int->Int} n -> +[Var(n),Int(1)] end]
+COMPILING ==> sp13b.svm
+[LDF([],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LD (fac,0),CALL 1,RTN,
+label_1:,LD (n,0),LDCI 1,PLUS,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LD (fac,0),TAILCALL 1,
+label_1:,LD (n,0),LDCI 1,PLUS,RTN]
+LINKING ==> 
+[LDF([],1,7),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,LD (fac,0),TAILCALL 1,
+7:,LD (n,0),LDCI 1,PLUS,RTN]
+Loading sVM code from ..sp13b.svm
+Loaded [LDF([],1,7),LDF([],1,4),CALL 1,DONE,LDCI 3,LD (fac,0),TAILCALL 1,LD (n,0),LDCI 1,PLUS,RTN]
+Executing ==> 4

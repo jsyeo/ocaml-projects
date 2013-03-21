@@ -1,0 +1,34 @@
+Loading sPL program ..
+  let {int->int->int}   f =      recfun foo {int->int->int} n ->                 if n=0 then fun {int->int} acc -> acc end                else fun {int->int} acc -> (foo (n-1) (acc*n)) end                end             endin {int}   f 30 1end
+  as let {Int->Int->Int} f = recfun foo {Int->Int->Int} n -> if =[Var(n),Int(0)] then fun {Int->Int} acc -> Var(acc) end else fun {Int->Int} acc -> Appln[Var(foo); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end end in {Int}Appln[Var(f); Int(30);Int(1)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} f -> Appln[Var(f); Int(30);Int(1)] end; recfun foo {Int->Int->Int} n -> if =[Var(n),Int(0)] then fun {Int->Int} acc -> Var(acc) end else fun {Int->Int} acc -> Appln[Var(foo); -[Var(n),Int(1)];*[Var(acc),Var(n)]] end end]
+COMPILING ==> sp15.svm
+[LDFR([(foo,1)],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 1,LDCI 30,LD (f,0),CALL 2,RTN,
+label_1:,LD (n,1),LDCI 0,EQ,JOF label_2,LDF([],1,label_4),GOTO label_3,
+label_2:,LDF([(foo,0),(n,1)],1,label_5),
+label_3:,RTN,
+label_4:,LD (acc,0),RTN,
+label_5:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (foo,0),CALL 2,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(foo,1)],1,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 1,LDCI 30,LD (f,0),TAILCALL 2,
+label_1:,LD (n,1),LDCI 0,EQ,JOF label_2,LDF([],1,label_4),GOTO label_3,
+label_2:,LDF([(foo,0),(n,1)],1,label_5),
+label_3:,RTN,
+label_4:,LD (acc,0),RTN,
+label_5:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (foo,0),TAILCALL 2]
+LINKING ==> 
+[LDFR([(foo,1)],1,8),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 1,LDCI 30,LD (f,0),TAILCALL 2,
+8:,LD (n,1),LDCI 0,EQ,JOF 14,LDF([],1,16),GOTO 15,
+14:,LDF([(foo,0),(n,1)],1,18),
+15:,RTN,
+16:,LD (acc,0),RTN,
+18:,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (foo,0),TAILCALL 2]
+Loading sVM code from ..sp15.svm
+Loaded [LDFR([(foo,1)],1,8),LDF([],1,4),CALL 1,DONE,LDCI 1,LDCI 30,LD (f,0),TAILCALL 2,LD (n,1),LDCI 0,EQ,JOF 14,LDF([],1,16),GOTO 15,LDF([(foo,0),(n,1)],1,18),RTN,LD (acc,0),RTN,LD (acc,2),LD (n,1),TIMES,LD (n,1),LDCI 1,MINUS,LD (foo,0),TAILCALL 2]
+High Stack Memory Mark :3
+Executing ==> -738197504

@@ -1,0 +1,17 @@
+Loading sPL program ..
+  fun {(int->int)->int->int} x y -> x y end fun {int->int} x -> x+1 end 3
+  as Appln[fun {(Int->Int)->Int->Int} x y -> Appln[Var(x); Var(y)] end; fun {Int->Int} x -> +[Var(x),Int(1)] end;Int(3)]
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int)->Int->Int} x y -> Appln[Var(x); Var(y)] end; fun {Int->Int} x -> +[Var(x),Int(1)] end;Int(3)]
+COMPILING ==> sp12.svm
+[LDCI 3,LDF([],1,label_1),LDF([],2,label_0),CALL 2,DONE,
+label_0:,LD (y,1),LD (x,0),CALL 1,RTN,
+label_1:,LD (x,0),LDCI 1,PLUS,RTN]
+LINKING ==> 
+[LDCI 3,LDF([],1,9),LDF([],2,5),CALL 2,DONE,
+5:,LD (y,1),LD (x,0),CALL 1,RTN,
+9:,LD (x,0),LDCI 1,PLUS,RTN]
+Loading sVM code from ..sp12.svm
+Loaded [LDCI 3,LDF([],1,9),LDF([],2,5),CALL 2,DONE,LD (y,1),LD (x,0),CALL 1,RTN,LD (x,0),LDCI 1,PLUS,RTN]
+Executing ==> 4

@@ -1,0 +1,25 @@
+Loading sPL program ..
+  recfun fac {int -> int} n ->    if n < 2 then 1    else n * (fac (n-1))    endend 5
+  as Appln[recfun fac {Int->Int} n -> if <[Var(n),Int(2)] then Int(1) else *[Var(n),Appln[Var(fac); -[Var(n),Int(1)]]] end; Int(5)]
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[recfun fac {Int->Int} n -> if <[Var(n),Int(2)] then Int(1) else *[Var(n),Appln[Var(fac); -[Var(n),Int(1)]]] end; Int(5)]
+COMPILING ==> sp10a.svm
+[LDCI 5,LDFR([(fac,1)],1,label_0),CALL 1,DONE,
+label_0:,LD (n,1),LDCI 2,LT,JOF label_1,LDCI 1,GOTO label_2,
+label_1:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (fac,0),CALL 1,TIMES,
+label_2:,RTN]
+TAIL-OPTIMIZE ==> 
+[LDCI 5,LDFR([(fac,1)],1,label_0),CALL 1,DONE,
+label_0:,LD (n,1),LDCI 2,LT,JOF label_1,LDCI 1,GOTO label_2,
+label_1:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (fac,0),CALL 1,TIMES,
+label_2:,RTN]
+LINKING ==> 
+[LDCI 5,LDFR([(fac,1)],1,4),CALL 1,DONE,
+4:,LD (n,1),LDCI 2,LT,JOF 10,LDCI 1,GOTO 17,
+10:,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (fac,0),CALL 1,TIMES,
+17:,RTN]
+Loading sVM code from ..sp10a.svm
+Loaded [LDCI 5,LDFR([(fac,1)],1,4),CALL 1,DONE,LD (n,1),LDCI 2,LT,JOF 10,LDCI 1,GOTO 17,LD (n,1),LD (n,1),LDCI 1,MINUS,LD (fac,0),CALL 1,TIMES,RTN]
+High Stack Memory Mark :10
+Executing ==> 120

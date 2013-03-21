@@ -1,0 +1,18 @@
+Loading sPL program ..
+  (fun {int -> int} x -> x * x end 4)
+  as Appln[fun {Int->Int} x -> *[Var(x),Var(x)] end; Int(4)]
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {Int->Int} x -> *[Var(x),Var(x)] end; Int(4)]
+COMPILING ==> sp7a.svm
+[LDCI 4,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (x,0),LD (x,0),TIMES,RTN]
+TAIL-OPTIMIZE ==> 
+[LDCI 4,LDF([],1,label_0),CALL 1,DONE,
+label_0:,LD (x,0),LD (x,0),TIMES,RTN]
+LINKING ==> 
+[LDCI 4,LDF([],1,4),CALL 1,DONE,
+4:,LD (x,0),LD (x,0),TIMES,RTN]
+Loading sVM code from ..sp7a.svm
+Loaded [LDCI 4,LDF([],1,4),CALL 1,DONE,LD (x,0),LD (x,0),TIMES,RTN]
+Executing ==> 16

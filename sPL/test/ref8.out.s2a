@@ -1,0 +1,15 @@
+Loading sPL program ..
+  fun {int -> int -> int} x y ->    x - yend 7 8
+  as Appln[fun {Int->Int->Int} x y -> -[Var(x),Var(y)] end; Int(7);Int(8)]
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {Int->Int->Int} x y -> -[Var(x),Var(y)] end; Int(7);Int(8)]
+COMPILING ==> s2a.svm
+[LDCI 8,LDCI 7,LDF([],2,label_0),CALL 2,DONE,
+label_0:,LD (x,0),LD (y,1),MINUS,RTN]
+LINKING ==> 
+[LDCI 8,LDCI 7,LDF([],2,5),CALL 2,DONE,
+5:,LD (x,0),LD (y,1),MINUS,RTN]
+Loading sVM code from ..s2a.svm
+Loaded [LDCI 8,LDCI 7,LDF([],2,5),CALL 2,DONE,LD (x,0),LD (y,1),MINUS,RTN]
+Executing ==> -1

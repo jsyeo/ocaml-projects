@@ -1,0 +1,28 @@
+Loading sPL program ..
+  let {int->int->int} f = fun {int->int->int} x y -> x + y endin {int}let {(int->int)->int->int} apply = fun {(int->int)->int->int} g x -> g x end   in {int}   apply (f 3) 4 endend
+  as let {Int->Int->Int} f = fun {Int->Int->Int} x y -> +[Var(x),Var(y)] end in {Int}let {(Int->Int)->Int->Int} apply = fun {(Int->Int)->Int->Int} g x -> Appln[Var(g); Var(x)] end in {Int}Appln[Var(apply); Appln[Var(f); Int(3)];Int(4)] end end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} f -> Appln[fun {((Int->Int)->Int->Int)->Int} apply -> Appln[Var(apply); Appln[Var(f); Int(3)];Int(4)] end; fun {(Int->Int)->Int->Int} g x -> Appln[Var(g); Var(x)] end] end; fun {Int->Int->Int} x y -> +[Var(x),Var(y)] end]
+COMPILING ==> s2c.svm
+[LDF([],2,label_3),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDF([],2,label_2),LDF([(f,0)],1,label_1),CALL 1,RTN,
+label_1:,LDCI 4,LDCI 3,LD (f,0),CALL 1,LD (apply,1),CALL 2,RTN,
+label_2:,LD (x,1),LD (g,0),CALL 1,RTN,
+label_3:,LD (x,0),LD (y,1),PLUS,RTN]
+TAIL-OPTIMIZE ==> 
+[LDF([],2,label_3),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDF([],2,label_2),LDF([(f,0)],1,label_1),TAILCALL 1,
+label_1:,LDCI 4,LDCI 3,LD (f,0),CALL 1,LD (apply,1),TAILCALL 2,
+label_2:,LD (x,1),LD (g,0),TAILCALL 1,
+label_3:,LD (x,0),LD (y,1),PLUS,RTN]
+LINKING ==> 
+[LDF([],2,16),LDF([],1,4),CALL 1,DONE,
+4:,LDF([],2,13),LDF([(f,0)],1,7),TAILCALL 1,
+7:,LDCI 4,LDCI 3,LD (f,0),CALL 1,LD (apply,1),TAILCALL 2,
+13:,LD (x,1),LD (g,0),TAILCALL 1,
+16:,LD (x,0),LD (y,1),PLUS,RTN]
+Loading sVM code from ..s2c.svm
+Loaded [LDF([],2,16),LDF([],1,4),CALL 1,DONE,LDF([],2,13),LDF([(f,0)],1,7),TAILCALL 1,LDCI 4,LDCI 3,LD (f,0),CALL 1,LD (apply,1),TAILCALL 2,LD (x,1),LD (g,0),TAILCALL 1,LD (x,0),LD (y,1),PLUS,RTN]
+High Stack Memory Mark :2
+Executing ==> 7

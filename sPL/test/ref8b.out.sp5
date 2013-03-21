@@ -1,0 +1,28 @@
+Loading sPL program ..
+  let {int -> int -> int}     power = recfun mypower {int -> int -> int}                x y ->                if y = 0                then 1                else x * (mypower x (y - 1))                end            end            in  {int}    (power 17 3)end
+  as let {Int->Int->Int} power = recfun mypower {Int->Int->Int} x y -> if =[Var(y),Int(0)] then Int(1) else *[Var(x),Appln[Var(mypower); Var(x);-[Var(y),Int(1)]]] end in {Int}Appln[Var(power); Int(17);Int(3)] end
+TYPE CHECKING program ..
+ ==> inferred type Int
+TRANSFORMING ==> Appln[fun {(Int->Int->Int)->Int} power -> Appln[Var(power); Int(17);Int(3)] end; recfun mypower {Int->Int->Int} x y -> if =[Var(y),Int(0)] then Int(1) else *[Var(x),Appln[Var(mypower); Var(x);-[Var(y),Int(1)]]] end]
+COMPILING ==> sp5.svm
+[LDFR([(mypower,1)],2,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LDCI 17,LD (power,0),CALL 2,RTN,
+label_1:,LD (y,2),LDCI 0,EQ,JOF label_2,LDCI 1,GOTO label_3,
+label_2:,LD (x,1),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (mypower,0),CALL 2,TIMES,
+label_3:,RTN]
+TAIL-OPTIMIZE ==> 
+[LDFR([(mypower,1)],2,label_1),LDF([],1,label_0),CALL 1,DONE,
+label_0:,LDCI 3,LDCI 17,LD (power,0),TAILCALL 2,
+label_1:,LD (y,2),LDCI 0,EQ,JOF label_2,LDCI 1,GOTO label_3,
+label_2:,LD (x,1),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (mypower,0),CALL 2,TIMES,
+label_3:,RTN]
+LINKING ==> 
+[LDFR([(mypower,1)],2,8),LDF([],1,4),CALL 1,DONE,
+4:,LDCI 3,LDCI 17,LD (power,0),TAILCALL 2,
+8:,LD (y,2),LDCI 0,EQ,JOF 14,LDCI 1,GOTO 22,
+14:,LD (x,1),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (mypower,0),CALL 2,TIMES,
+22:,RTN]
+Loading sVM code from ..sp5.svm
+Loaded [LDFR([(mypower,1)],2,8),LDF([],1,4),CALL 1,DONE,LDCI 3,LDCI 17,LD (power,0),TAILCALL 2,LD (y,2),LDCI 0,EQ,JOF 14,LDCI 1,GOTO 22,LD (x,1),LD (y,2),LDCI 1,MINUS,LD (x,1),LD (mypower,0),CALL 2,TIMES,RTN]
+High Stack Memory Mark :12
+Executing ==> 4913
