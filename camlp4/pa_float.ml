@@ -18,6 +18,10 @@ module Make (Syntax : Sig.Camlp4Syntax) = struct
   open Sig
   include Syntax
 
+(*
+  Using Camlp4MapGenerator to traverse the AST.
+  See http://brion.inria.fr/gallium/index.php/Camlp4MapGenerator
+*)
   class ['a] float_subst _loc = object
     inherit Ast.map as super
     method _Loc_t (_ : 'a) = _loc
